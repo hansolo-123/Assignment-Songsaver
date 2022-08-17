@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,  } from "react";
 import Genres from "./Genres";
-import Rating from "./Rating";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { Autocomplete } from "@mui/material/";
@@ -12,7 +11,6 @@ const AutoComplete = React.memo((props) => {
   const [artistData, setArtistData] = useState("");
   const [songData, setSongData] = useState("");
   const [genreData, setGenreData] = useState("");
-  const [ratingData, setRatingData] = useState("");
 
   useEffect(() => {
     const url = `https://shazam.p.rapidapi.com/auto-complete?term=${query}&locale=en-US&offset=0&limit=5`;
@@ -24,6 +22,8 @@ const AutoComplete = React.memo((props) => {
         "X-RapidAPI-Host": "shazam.p.rapidapi.com",
       },
     };
+
+    
 
     const fetchKeywords = async () => {
       const data = await fetch(url, options);
@@ -37,11 +37,11 @@ const AutoComplete = React.memo((props) => {
     fetchKeywords(url, options);
   }, [query]);
 
-  console.log(jsonResults);
-  console.log(artistData, songData, genreData);
+  console.log(jsonResults)
+  console.log(artistData, songData, genreData)
 
   return (
-    <Stack sx={{ width: 1000, margin: "left" }} direction="row">
+    <Stack sx={{ width: 700, margin: "left" }} direction="row">
       <Autocomplete
         className="AutoComplete"
         id="artist_suggestion"
@@ -50,10 +50,7 @@ const AutoComplete = React.memo((props) => {
         freeSolo
         autoSelect
         defaultValue={[artistData]}
-        onInputChange={(e) => {
-          setQuery(e.target.value);
-          setArtistData(e.target.value);
-        }}
+        onInputChange={(e) => {setQuery(e.target.value); setArtistData(e.target.value)}}
         onChange={(event, value) => {
           if (event) {
             event.id = "artist";
@@ -85,10 +82,7 @@ const AutoComplete = React.memo((props) => {
         freeSolo
         autoSelect
         defaultValue={[songData]}
-        onInputChange={(e) => {
-          setQuery(e.target.value);
-          setSongData(e.target.value);
-        }}
+        onInputChange={(e) => {setQuery(e.target.value); setSongData(e.target.value)}}
         onChange={(event, value) => {
           if (event) {
             event.id = "song";
@@ -114,19 +108,22 @@ const AutoComplete = React.memo((props) => {
         )}
       />
       <Autocomplete
-        id="rating_suggestion"
+        id="genre_suggestion"
         getOptionLabel={(Genres) => `${Genres}`}
         options={Genres}
+        freeSolo
+        autoSelect
         defaultValue={[genreData]}
         onChange={(event, value) => {
           if (event) {
             event.id = "genre";
           }
           props.clicked(event, value);
-          setGenreData(event.target.value);
-        }}
+          setGenreData(event.target.value)}
+        }
         sx={{ width: 300 }}
         isOptionEqualToValue={(option, value) => option.Genres === value.Genres}
+        noOptiontext={"no suggestions found"}
         renderOption={(props, Genres) => (
           <Box
             component="li"
@@ -138,33 +135,6 @@ const AutoComplete = React.memo((props) => {
         )}
         renderInput={(params) => (
           <TextField {...params} label="select a genre" />
-        )}
-      />
-      <Autocomplete
-        id="rating_suggestion"
-        getOptionLabel={(Rating) => `${Rating}`}
-        options={Rating}
-        defaultValue={[ratingData]}
-        onChange={(event, value) => {
-          if (event) {
-            event.id = "rating";
-          }
-          props.clicked(event, value);
-          setRatingData(event.target.value);
-        }}
-        sx={{ width: 300 }}
-        isOptionEqualToValue={(option, value) => option.Rating === value.Rating}
-        renderOption={(props, Rating) => (
-          <Box
-            component="li"
-            {...props}
-            key={Math.random().toString(36).slice(2)}
-          >
-            {Rating}
-          </Box>
-        )}
-        renderInput={(params) => (
-          <TextField {...params} label="select a rating" />
         )}
       />
     </Stack>
