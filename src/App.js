@@ -14,22 +14,7 @@ class App extends Component {
       song: "",
       genre: "",
       rating: "",
-      artist_song: [
-        {
-          artist: "Zilbert",
-          id: "1",
-          song: "ASjawea",
-          genre: "Rock",
-          rating: "1",
-        },
-        {
-          artist: "Albert",
-          id: "2",
-          song: "Sjawea",
-          genre: "Pop",
-          rating: "4",
-        },
-      ],
+      artist_song: [],
     };
 
     this.callbackFunction = this.callbackFunction.bind(this);
