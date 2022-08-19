@@ -28,6 +28,7 @@ ul li div {
   margin-right: 0.5px;
   overflow: hidden;
   line-height: 2;
+  
 }
 
 ul li div h3 {
@@ -37,7 +38,10 @@ ul li div h3 {
   color: white;
 }
 
+.para h3 {
+  text-decoration: underline;}
 
+ .para:hover {cursor:grab;}
 
 form {
   display: flex;
@@ -63,6 +67,7 @@ form {
   line-height: 85px;
   margin-left: 10px;
 }
+
 .submit_btn {
   width: 75px;
   min-width: 75px;
@@ -70,4 +75,13 @@ form {
   min-height: 57px;
   font-size: 16px;
   border-radius: 4px;
+}
+
+.symbol {
+  text-align: left;
+  font-size: 24px;
+  color: white;
+  font-weight: bold;
+  margin-left: 70%;
+  margin-top: -42px;
 }

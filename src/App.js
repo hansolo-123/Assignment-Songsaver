@@ -8,17 +8,37 @@ class App extends Component {
     super(props);
     this.clearDataRef = React.createRef(null);
     this.state = {
+      sort: "",
+      toggle: false,
       artist: "",
       song: "",
       genre: "",
       rating: "",
-      artist_song: [],
+      artist_song: [
+        {
+          artist: "Zilbert",
+          id: "1",
+          song: "ASjawea",
+          genre: "Rock",
+          rating: "1",
+        },
+        {
+          artist: "Albert",
+          id: "2",
+          song: "Sjawea",
+          genre: "Pop",
+          rating: "4",
+        },
+      ],
     };
 
     this.callbackFunction = this.callbackFunction.bind(this);
     this.clicked = this.clicked.bind(this);
     this.handle = this.handle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.removeItem = this.removeItem.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
+    this.alphaSort = this.alphaSort.bind(this);
   }
 
   callbackFunction = (event, value) => {
@@ -34,6 +54,7 @@ class App extends Component {
     if (event.id === "rating") {
       return this.setState({ rating: value }, console.log(this.state));
     }
+    this.clearOptionInput();
   };
 
   clicked = (event, value) => {
@@ -59,8 +80,8 @@ class App extends Component {
   }
 
   handleSubmit() {
-    var newArray = this.state.artist_song.slice();
-    var itemToBeAdded = {
+    const newArray = this.state.artist_song.slice();
+    const itemToBeAdded = {
       artist: this.state.artist,
       id: Math.random().toString(36).slice(2),
       song: this.state.song,
@@ -77,6 +98,84 @@ class App extends Component {
     this.setState({ rating: "" });
   }
 
+  removeItem(Item) {
+    console.log("clicked", Item, this.state.artist_song);
+    const id = Item.id;
+    const index = this.state.artist_song.findIndex(
+      (playlist) => playlist.id === id
+    );
+    const playlist = [...this.state.artist_song];
+    playlist[index] = {
+      ...playlist.slice(0, index),
+      ...playlist.slice(index + 1),
+    };
+    if (index !== -1) {
+      playlist.splice(index, 1);
+      this.setState({ artist_song: playlist });
+    }
+  }
+  handleToggle = () => {
+    this.setState((prevState) => ({
+      toggle: !prevState.toggle,
+    }));
+    console.log(this.state.sort);
+  };
+
+  alphaSort = () => {
+    if (this.state.sort === "artist") {
+      return [...this.state.artist_song].sort(function (a, b) {
+        let nameA = a.artist.toUpperCase();
+        let nameB = b.artist.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    if (this.state.sort === "song") {
+      return [...this.state.artist_song].sort(function (a, b) {
+        let nameA = a.song.toUpperCase();
+        let nameB = b.song.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    if (this.state.sort === "genre") {
+      return [...this.state.artist_song].sort(function (a, b) {
+        let nameA = a.genre.toUpperCase();
+        let nameB = b.genre.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    if (this.state.sort === "rating") {
+      return [...this.state.artist_song].sort(function(a, b) {
+        let num1 = a.rating.toUpperCase();
+        let num2 = b.rating.toUpperCase();
+        if (num1 < num2) {
+          return -1;
+        }
+        if (num1 > num2) {
+        return 1;
+      }
+      return 0;
+    });
+  };
+}
+
   render() {
     return (
       <main>
@@ -91,24 +190,64 @@ class App extends Component {
           <div className="SongSaver"></div>
           <ul className="ListItems">
             <li>
-              <div>
+              <div
+                className="para"
+                value="artist"
+                id="artist"
+                onClick={() => {
+                this.setState({ sort: "artist" });
+                this.handleToggle();
+                }}
+              >
                 <h3>Artist</h3>
+                <div className="symbol">⇵</div>
               </div>
-
-              <div>
+              <div
+                className="para"
+                id="song"
+                onClick={() => {
+                  this.setState({ sort: "song" });
+                  this.handleToggle();
+                
+                }}
+              >
                 <h3>Song Title</h3>
+                <div className="symbol">⇵</div>
               </div>
 
-              <div>
+              <div
+                className="para"
+                id="genre"
+                onClick={() => {
+                  this.setState({ sort: "genre" });
+                  this.handleToggle();
+                }}
+              >
                 <h3>Genre</h3>
+                <div className="symbol">⇵</div>
               </div>
 
-              <div>
+              <div
+                className="para"
+                id="rating"
+                onClick={() => {
+                  this.setState({ sort: "rating" });
+                  this.handleToggle();
+                }}
+              >
                 <h3>Rating</h3>
+                <div className="symbol">⇵</div>
               </div>
             </li>
-            {this.state.artist_song.map((item) => (
-              <Item key={Math.random().toString(36).slice(2)} item={item} />
+            {(this.state.toggle
+              ? this.alphaSort()
+              : this.state.artist_song
+            ).map((item) => (
+              <Item
+                key={Math.random().toString(36).slice(2)}
+                clickItem={() => this.removeItem(item)}
+                item={item}
+              />
             ))}
           </ul>
         </div>

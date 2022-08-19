@@ -40,6 +40,8 @@ const AutoComplete = React.memo((props) => {
   console.log(jsonResults);
   console.log(artistData, songData, genreData);
 
+  
+
   return (
     <Stack sx={{ width: 1000, margin: "left" }} direction="row">
       <Autocomplete
@@ -59,6 +61,8 @@ const AutoComplete = React.memo((props) => {
             event.id = "artist";
           }
           props.clicked(event, value);
+          setQuery("");
+          setArtistData("");
         }}
         sx={{ width: 300 }}
         isOptionEqualToValue={(option, value) =>
@@ -94,6 +98,8 @@ const AutoComplete = React.memo((props) => {
             event.id = "song";
           }
           props.clicked(event, value);
+          setQuery("");
+          setArtistData("");
         }}
         sx={{ width: 300 }}
         isOptionEqualToValue={(option, value) =>

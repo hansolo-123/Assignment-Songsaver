@@ -1,11 +1,12 @@
 import React from "react";
 
-function Item({ item }) {
+function Item({ item, clickItem }) {
   return (
     <li
       key={item.id}
       className="list-item"
       value={item.artist}
+      onClick={clickItem}
       count={item.song}
     >
       <div>
@@ -19,7 +20,7 @@ function Item({ item }) {
       </div>{" "}
       <div>
         <h3> {item.rating}</h3>
-      </div>
+      </div>{" "}
     </li>
   );
 }
